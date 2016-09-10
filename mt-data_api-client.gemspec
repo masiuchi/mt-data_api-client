@@ -12,6 +12,7 @@ Gem::Specification.new do |spec|
   spec.summary       = 'Movable Type Data API client for Ruby.'
   spec.description   = 'Movable Type Data API client for Ruby.'
   spec.homepage      = 'https://github.com/masiuchi/mt-data_api-client'
+  spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.require_paths = ['lib']
