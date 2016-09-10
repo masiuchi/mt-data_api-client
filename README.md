@@ -19,13 +19,16 @@ Or install it yourself as:
     $ gem install mt-data_api-client
 
 ## Usage
-    require 'mt/data_api/client'
 
-    client = MT::DataAPI::Client.new(
-      base_url: 'http://localhost/mt/mt-data-api.cgi',
-      client_id: 'mt-ruby'
-    )
-    json = client.call(:list_entries, site_id: 1)
+```ruby
+require 'mt/data_api/client'
+
+client = MT::DataAPI::Client.new(
+  base_url: 'http://localhost/mt/mt-data-api.cgi',
+  client_id: 'mt-ruby'
+)
+json = client.call(:list_entries, site_id: 1)
+```
 
 ## Development
 
