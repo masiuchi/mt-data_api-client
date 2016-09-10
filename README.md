@@ -1,15 +1,13 @@
-# Mt::DataApi
+# MT::DataAPI::Client
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/mt/data_api`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Movable Type Data API client for Ruby. 
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'mt-data_api'
+gem 'mt-data_api-client'
 ```
 
 And then execute:
@@ -18,11 +16,15 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install mt-data_api
+    $ gem install mt-data_api-client
 
 ## Usage
 
-TODO: Write usage instructions here
+    client = MT::DataAPI::Client.new(
+      base_url: 'http://localhost/mt/mt-data-api.cgi',
+      client_id: 'mt-ruby'
+    )
+    json = client.call(:list_entries, site_id: 1)
 
 ## Development
 
