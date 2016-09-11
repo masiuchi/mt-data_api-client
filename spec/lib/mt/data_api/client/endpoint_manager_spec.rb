@@ -68,7 +68,18 @@ describe MT::DataAPI::Client::EndpointManager do
 
   describe '#find_endpoint' do
     endpoints = [
-      {"resources"=>nil, "format"=>nil, "component"=>{"name"=>"Core", "id"=>"core"}, "version"=>1, "verb"=>"GET", "id"=>"list_endpoints", "route"=>"/endpoints"},
+      {
+        'resources' => nil,
+        'format' => nil,
+        'component' => {
+          'name' => 'Core',
+          'id' => 'core'
+        },
+        'version' => 1,
+        'verb' => 'GET',
+        'id' => 'list_endpoints',
+        'route' => '/endpoints'
+      }
     ]
 
     shared_examples_for :find_endpoint do
@@ -102,7 +113,7 @@ describe MT::DataAPI::Client::EndpointManager do
       before do
         response = { totalResults: 1, items: endpoints }
         WebMock.stub_request(:get, "#{args[:base_url]}/v3/endpoints")\
-          .to_return(body: response.to_json)
+               .to_return(body: response.to_json)
       end
 
       after { WebMock.reset! }
