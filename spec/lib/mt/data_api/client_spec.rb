@@ -1,3 +1,5 @@
+require 'spec_helper.rb'
+
 require 'mt/data_api/client'
 require 'mt/data_api/client/endpoint_manager'
 

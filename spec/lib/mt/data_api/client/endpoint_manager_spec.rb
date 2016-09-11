@@ -1,3 +1,5 @@
+require 'spec_helper.rb'
+
 require 'json'
 
 require 'webmock/rspec'
