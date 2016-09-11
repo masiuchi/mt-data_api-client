@@ -53,7 +53,6 @@ module MT
           endpoints = @endpoints.select do |ep|
             ep['id'].to_s == id.to_s && @api_version.to_i >= ep['version'].to_i
           end
-          endpoints.sort! { |a, b| b['version'].to_i <=> a['version'].to_i }
           endpoints.first
         end
 
@@ -66,7 +65,8 @@ module MT
         def retrieve_endpoints
           response = Endpoint.new(LIST_ENDPOINTS_HASH).call
           raise response['error'] if response.key? 'error'
-          response['items']
+          endpoints = response['items']
+          endpoints.sort { |a, b| b['version'].to_i <=> a['version'].to_i }
         end
       end
     end
