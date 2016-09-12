@@ -1,3 +1,5 @@
+require 'spec_helper.rb'
+
 require 'json'
 
 require 'webmock/rspec'
@@ -15,7 +17,7 @@ describe MT::DataAPI::Client::EndpointManager do
   describe '#initialize' do
     shared_examples_for :invalid_arguments do
       it 'raises ArgumentError' do
-        expect { described_class.new(args).to raise_error(ArgumentEror) }
+        expect { described_class.new(args) }.to raise_error(ArgumentError)
       end
     end
 

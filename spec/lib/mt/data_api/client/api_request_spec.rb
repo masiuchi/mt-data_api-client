@@ -1,3 +1,5 @@
+require 'spec_helper.rb'
+
 require 'webmock/rspec'
 
 require 'mt/data_api/client/api_request'
