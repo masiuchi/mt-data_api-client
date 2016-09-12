@@ -15,3 +15,6 @@ task(:rubocop) { sh 'rubocop' }
 
 desc 'bundle outdated'
 task(:bundle_outdated) { sh 'bundle outdated' }
+
+desc 'reek'
+task(:reek) { sh 'reek' }

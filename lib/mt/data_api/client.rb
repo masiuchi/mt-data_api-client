@@ -7,7 +7,7 @@ module MT
   module DataAPI
     # Movable Type Data API client for Ruby.
     class Client
-      attr_accessor :access_token
+      attr_reader :access_token
 
       def initialize(opts)
         opts = opts.symbolize_keys
@@ -16,9 +16,7 @@ module MT
       end
 
       def call(id, args = {})
-        id = id.to_s
-        endpoint = @endpoint_manager.find_endpoint(id)
-        raise "no endpoint: #{id}" unless endpoint
+        endpoint = find_endpoint(id)
         res = endpoint.call(@access_token, args)
         @access_token = res['accessToken'] if id == 'authenticate'
         @endpoint_manager.endpoints = res['items'] if id == 'list_endpoints'
@@ -27,6 +25,14 @@ module MT
 
       def endpoints
         @endpoint_manager.endpoints
+      end
+
+      private
+
+      def find_endpoint(id)
+        endpoint = @endpoint_manager.find_endpoint(id.to_s)
+        raise "no endpoint: #{id}" unless endpoint
+        endpoint
       end
     end
   end

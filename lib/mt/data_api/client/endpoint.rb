@@ -29,7 +29,8 @@ module MT
 
         def call(access_token = nil, args = {})
           res = APIRequest.new(self).send(access_token, args)
-          raise "#{res.code}: #{res.message}" unless res.code == '200'
+          code = res.code
+          raise "#{code}: #{res.message}" unless code == '200'
           JSON.parse(res.body)
         end
 
@@ -43,11 +44,11 @@ module MT
 
         def route(args = {})
           route = @route.dup
-          route.scan(%r{:[^:/]+(?=/|$)}).each do |m|
-            key = m.sub(/^:/, '').to_sym
+          route.scan(%r{:[^:/]+(?=/|$)}).each do |match|
+            key = match.sub(/^:/, '').to_sym
             value = args.delete(key)
             raise ArgumentError, %(parameter "#{key}" is required) unless value
-            route.sub!(/#{m}/, value.to_s)
+            route.sub!(/#{match}/, value.to_s)
           end
           route
         end
