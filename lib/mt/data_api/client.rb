@@ -18,7 +18,7 @@ module MT
       def call(id, args = {})
         id = id.to_s
         endpoint = @endpoint_manager.find_endpoint(id)
-        raise "no endpoint: #{id}" unless endpoint
+        return nil unless endpoint
         res = endpoint.call(@access_token, args)
         @access_token = res['accessToken'] if id == 'authenticate'
         @endpoint_manager.endpoints = res['items'] if id == 'list_endpoints'

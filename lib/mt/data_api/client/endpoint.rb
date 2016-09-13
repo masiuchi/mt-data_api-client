@@ -29,7 +29,7 @@ module MT
 
         def call(access_token = nil, args = {})
           res = APIRequest.new(self).send(access_token, args)
-          raise "#{res.code}: #{res.message}" unless res.code == '200'
+          return nil if res.body.nil?
           JSON.parse(res.body)
         end
 

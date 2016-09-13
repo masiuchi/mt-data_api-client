@@ -89,11 +89,11 @@ describe MT::DataAPI::Client::Endpoint do
     end
 
     context 'with invalid response' do
-      it 'raises exception' do
+      it 'returns error' do
         stub_request(:get, "#{api_url}/endpoints")\
           .to_return(status: [500, 'Internal Server Error'])
         endpoint = described_class.new(list_endpoints_hash)
-        expect { endpoint.call }.to raise_error('500: Internal Server Error')
+        expect(endpoint.call).to be_nil
       end
     end
   end
