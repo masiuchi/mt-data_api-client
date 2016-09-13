@@ -47,9 +47,9 @@ describe MT::DataAPI::Client do
     context 'when no endpoint' do
       client = described_class.new(opts_with_endpoints)
 
-      it 'raises error' do
+      it 'returns nil' do
         id = 'invalid'
-        expect { client.call(id) }.to raise_error("no endpoint: #{id}")
+        expect(client.call(id)).to be_nil
       end
     end
 
