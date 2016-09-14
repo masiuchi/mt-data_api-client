@@ -3,13 +3,13 @@ require 'coveralls'
 require 'codeclimate-test-reporter'
 require 'webmock/rspec'
 
-if ENV['TRAVIS']
+if ENV['CIRCLECI']
   WebMock.disable_net_connect!(allow: 'codeclimate.com')
-  Coveralls.wear!
   CodeClimate::TestReporter.start do
     add_filter '/spec/'
   end
 else
+  Coveralls.wear! if ENV['TRAVIS']
   SimpleCov.start do
     add_filter '/spec/'
   end
