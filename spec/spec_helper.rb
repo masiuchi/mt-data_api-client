@@ -14,5 +14,7 @@ else
   SimpleCov.start do
     add_filter '/spec/'
   end
-  SimpleCov.formatter = SimpleCov::Formatter::Codecov if ENV['TRAVIS']
+  if ENV['TRAVIS'] && ENV['TRAVIS_RUBY_VERSION'] == '2.2.0'
+    SimpleCov.formatter = SimpleCov::Formatter::Codecov
+  end
 end
