@@ -1,6 +1,7 @@
 require 'simplecov'
 require 'coveralls'
 require 'codeclimate-test-reporter'
+require 'codecov'
 require 'webmock/rspec'
 
 if ENV['CIRCLECI']
@@ -13,4 +14,5 @@ else
   SimpleCov.start do
     add_filter '/spec/'
   end
+  SimpleCov.formatter = SimpleCov::Formatter::Codecov if ENV['TRAVIS']
 end
