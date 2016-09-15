@@ -10,7 +10,7 @@ if ENV['CIRCLECI']
     add_filter '/spec/'
   end
 else
-  Coveralls.wear! if ENV['TRAVIS']
+  Coveralls.wear! if ENV['TRAVIS'] && ENV['TRAVIS_RUBY_VERSION'] == '2.1.10'
   SimpleCov.start do
     add_filter '/spec/'
   end
