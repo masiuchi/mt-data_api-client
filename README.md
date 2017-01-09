@@ -27,7 +27,14 @@ client = MT::DataAPI::Client.new(
   base_url: 'http://localhost/mt/mt-data-api.cgi',
   client_id: 'mt-ruby'
 )
+
+# without block
 json = client.call(:list_entries, site_id: 1)
+
+# with block
+client.call(:list_sites) do |res|
+  json = res
+end
 ```
 
 ## Development

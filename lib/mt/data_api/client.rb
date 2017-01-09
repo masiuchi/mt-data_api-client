@@ -22,7 +22,7 @@ module MT
         res = endpoint.call(@access_token, args)
         @access_token = res['accessToken'] if id == 'authenticate'
         @endpoint_manager.endpoints = res['items'] if id == 'list_endpoints'
-        res
+        block_given? ? yield(res) : res
       end
 
       def endpoints
