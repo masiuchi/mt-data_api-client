@@ -104,6 +104,21 @@ describe MT::DataAPI::Client do
             expect(a_request(:get, url)).to have_been_made.times(1)
           end
         end
+
+        context 'with block' do
+          before do
+            @client = described_class.new(opts_with_endpoints)
+            @client.call(endpoints[0]['id']) do |res|
+              @res = res
+            end
+          end
+
+          it_behaves_like :list_endpoints
+
+          it 'calls http requests 1 time' do
+            expect(a_request(:get, url)).to have_been_made.times(1)
+          end
+        end
       end
 
       context 'when authenticate' do
