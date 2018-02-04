@@ -1,6 +1,6 @@
 require 'bundler/gem_tasks'
 
-default = [:spec, :rubocop, :bundle_outdated]
+default = [:spec, :rubocop]
 task default: default
 
 desc 'circleci'
