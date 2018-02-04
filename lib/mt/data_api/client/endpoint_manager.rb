@@ -16,7 +16,6 @@ module MT
         }.freeze
 
         attr_accessor :endpoints
-        attr_reader :access_token
 
         def initialize(opts)
           raise parameter_should_be_hash unless opts.is_a? Hash
@@ -37,7 +36,6 @@ module MT
           @client_id = opts[:client_id]
           @api_version = opts[:api_version] || DEFAULT_API_VERSION
           @endpoints = opts[:endpoints] if opts.key? :endpoints
-          @access_token = opts[:access_token] if opts.key? :access_token
         end
 
         def parameter_should_be_hash
