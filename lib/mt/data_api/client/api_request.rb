@@ -39,7 +39,7 @@ module MT
         end
 
         def post_or_put?
-          %w(POST PUT).include? @endpoint.verb
+          %w[POST PUT].include? @endpoint.verb
         end
       end
     end

@@ -61,7 +61,7 @@ module MT
         end
 
         def valid_verb?
-          %w(GET POST PUT DELETE).include? @verb
+          %w[GET POST PUT DELETE].include? @verb
         end
       end
     end
