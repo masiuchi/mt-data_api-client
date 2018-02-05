@@ -98,7 +98,7 @@ describe MT::DataAPI::Client::Endpoint do
     end
   end
 
-  describe '#request_uri' do
+  describe '#request_url' do
     list_entries_hash = {
       id: 'list_entries',
       route: '/sites/:site_id/entries',
