@@ -10,9 +10,9 @@ module MT
       attr_accessor :access_token
 
       def initialize(opts)
-        opts = opts.symbolize_keys
-        @access_token = opts.delete(:access_token)
-        @endpoint_manager = EndpointManager.new(opts)
+        opts_sym = opts.symbolize_keys.clone
+        @access_token = opts_sym.delete(:access_token)
+        @endpoint_manager = EndpointManager.new(opts_sym)
       end
 
       def call(id, args = {})

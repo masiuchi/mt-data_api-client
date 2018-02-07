@@ -27,10 +27,15 @@ describe MT::DataAPI::Client do
   describe '#access_token' do
     context 'when access_token is set' do
       access_token = 'test_token'
-      client = described_class.new(opts.merge(access_token: access_token))
+      opts_with_access_token = opts.merge(access_token: access_token)
+      client = described_class.new(opts_with_access_token)
 
       it 'returns set access_token' do
         expect(client.access_token).to eq(access_token)
+      end
+
+      it 'remains after initializing' do
+        expect(opts_with_access_token[:access_token]).to eq(access_token)
       end
     end
 

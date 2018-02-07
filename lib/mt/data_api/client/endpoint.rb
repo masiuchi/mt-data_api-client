@@ -10,7 +10,7 @@ module MT
       # Send request to endpoint.
       class Endpoint
         class << self
-          attr_writer :api_url
+          attr_writer :api_url, :client_id
         end
 
         attr_reader :verb
@@ -28,7 +28,10 @@ module MT
         end
 
         def call(access_token = nil, args = {})
-          res = APIRequest.new(self).send(access_token, args)
+          res = APIRequest.new(self).send(
+            access_token,
+            client_id_hash.clone.merge(args)
+          )
           return nil if res.body.nil?
           JSON.parse(res.body)
         end
@@ -40,6 +43,18 @@ module MT
         end
 
         private
+
+        def auth_id?
+          %w[authenticate authorize].include?(@id)
+        end
+
+        def client_id_hash
+          if auth_id?
+            { clientId: self.class.instance_variable_get(:@client_id) }
+          else
+            {}
+          end
+        end
 
         def route(args = {})
           route = @route.dup

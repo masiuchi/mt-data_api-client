@@ -17,8 +17,12 @@ describe MT::DataAPI::Client::Endpoint do
     verb: 'GET'
   }
   api_url = 'http://localhost/mt/mt-data-api.cgi/v3'
+  client_id = 'mt-data_api-client'
 
-  described_class.api_url = api_url
+  before(:all) do
+    described_class.api_url = api_url
+    described_class.client_id = client_id
+  end
 
   describe '#initialize' do
     shared_examples_for :instance do
@@ -70,14 +74,6 @@ describe MT::DataAPI::Client::Endpoint do
   end
 
   describe '#call' do
-    def http_response
-      uri = URI.parse('http://localhost/')
-      req = Net::HTTP::Get.new(uri.path)
-      Net::HTTP.start(uri.host, uri.port) do |http|
-        http.request(req)
-      end
-    end
-
     after(:each) { WebMock.reset! }
 
     context 'with valid reponse' do
@@ -96,9 +92,51 @@ describe MT::DataAPI::Client::Endpoint do
         expect(endpoint.call).to be_nil
       end
     end
+
+    context 'to authenticate endpoint' do
+      authenticate_endpoint_hash = {
+        id: 'authenticate',
+        route: '/authentication',
+        version: 1,
+        verb: 'POST'
+      }
+      it 'includes clientId in parameter' do
+        stub_request(:post, "#{api_url}/authentication")
+          .with(body: {
+            username: 'admin',
+            password: 'password',
+            clientId: client_id,
+          })
+        endpoint = described_class.new(authenticate_endpoint_hash)
+        endpoint.call('dummy_access_token', {
+          username: 'admin',
+          password: 'password'
+        })
+      end
+    end
+
+    context 'to authorize endpoint' do
+      authorize_endpoint_hash = {
+        id: 'authorize',
+        route: '/authorization',
+        version: 1,
+        verb: 'GET'
+      }
+      it 'includes clientId in parameter' do
+        stub_request(:get, "#{api_url}/authorization")
+          .with(query: {
+            redirectUrl: 'http://example.com',
+            clientId: client_id,
+          })
+        endpoint = described_class.new(authorize_endpoint_hash)
+        endpoint.call('dummy_access_token', {
+          redirectUrl: 'http://example.com'
+        })
+      end
+    end
   end
 
-  describe '#request_uri' do
+  describe '#request_url' do
     list_entries_hash = {
       id: 'list_entries',
       route: '/sites/:site_id/entries',
