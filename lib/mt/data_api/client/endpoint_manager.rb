@@ -22,6 +22,7 @@ module MT
           initialize_parameters(opts.symbolize_keys)
           raise invalid_parameter unless @base_url && @client_id
           Endpoint.api_url = api_url
+          Endpoint.client_id = @client_id
         end
 
         def find_endpoint(id)
