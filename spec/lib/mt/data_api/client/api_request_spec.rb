@@ -97,7 +97,11 @@ describe MT::DataAPI::Client::APIRequest do
           MT::DataAPI::Client::Endpoint.new(hash)
         end
         let(:access_token) { 'token' }
-        let(:args) { { site_id: 1, file: Tempfile.create('foo') } }
+        let(:args) {
+          temp = Tempfile.new('foo')
+          file = File.open(temp.path)
+          { site_id: 1, file: file }
+        }
 
         it_behaves_like :ok_response
       end
@@ -155,7 +159,11 @@ describe MT::DataAPI::Client::APIRequest do
           MT::DataAPI::Client::Endpoint.new(hash)
         end
         let(:access_token) { 'token' }
-        let(:args) { { put_file: Tempfile.create('foo') } }
+        let(:args) {
+          temp = Tempfile.new('foo')
+          file = File.open(temp.path)
+          { put_file: file }
+        }
 
         it_behaves_like :ok_response
       end
