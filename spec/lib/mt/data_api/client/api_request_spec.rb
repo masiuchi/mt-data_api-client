@@ -1,5 +1,6 @@
 require 'spec_helper.rb'
 
+require 'tempfile'
 require 'webmock/rspec'
 
 require 'mt/data_api/client/api_request'
@@ -77,6 +78,33 @@ describe MT::DataAPI::Client::APIRequest do
 
         it_behaves_like :ok_response
       end
+
+      context 'with file' do
+        before do
+          url = "#{api_url}/assets/upload"
+          stub_request(:post, url)
+            .with(headers: { 'Content-Type' => 'multipart/form-data' })
+            .to_return(body: '{}')
+        end
+
+        let(:endpoint) do
+          hash = {
+            id: 'upload_asset',
+            route: '/assets/upload',
+            version: 2,
+            verb: 'POST',
+          }
+          MT::DataAPI::Client::Endpoint.new(hash)
+        end
+        let(:access_token) { 'token' }
+        let(:args) {
+          temp = Tempfile.new('foo')
+          file = File.open(temp.path)
+          { site_id: 1, file: file }
+        }
+
+        it_behaves_like :ok_response
+      end
     end
 
     context 'when PUT method' do
@@ -109,6 +137,33 @@ describe MT::DataAPI::Client::APIRequest do
         end
         let(:access_token) { nil }
         let(:args) { { name: 'sample', id: 9 } }
+
+        it_behaves_like :ok_response
+      end
+
+      context 'with file' do
+        before do
+          url = "#{api_url}/put_file"
+          stub_request(:put, url)
+            .with(headers: { 'Content-Type' => 'multipart/form-data' })
+            .to_return(body: '{}')
+        end
+
+        let(:endpoint) do
+          hash = {
+            id: 'put_file',
+            route: '/put_file',
+            version: 1,
+            verb: 'PUT',
+          }
+          MT::DataAPI::Client::Endpoint.new(hash)
+        end
+        let(:access_token) { 'token' }
+        let(:args) {
+          temp = Tempfile.new('foo')
+          file = File.open(temp.path)
+          { put_file: file }
+        }
 
         it_behaves_like :ok_response
       end
