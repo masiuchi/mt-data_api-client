@@ -83,7 +83,7 @@ describe MT::DataAPI::Client::APIRequest do
         before do
           url = "#{api_url}/assets/upload"
           stub_request(:post, url)
-            .with(headers: { 'Content-Type': 'multipart/form-data' })
+            .with(headers: { 'Content-Type' => 'multipart/form-data' })
             .to_return(body: '{}')
         end
 
@@ -141,7 +141,7 @@ describe MT::DataAPI::Client::APIRequest do
         before do
           url = "#{api_url}/put_file"
           stub_request(:put, url)
-            .with(headers: { 'Content-Type': 'multipart/form-data' })
+            .with(headers: { 'Content-Type' => 'multipart/form-data' })
             .to_return(body: '{}')
         end
 
