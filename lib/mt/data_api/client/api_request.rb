@@ -30,16 +30,42 @@ module MT
           if access_token
             req['X-MT-Authorization'] = "MTAuth accessToken=#{access_token}"
           end
-          req.set_form_data(args) if post_or_put?
+          set_form(req, args) if post_or_put?
           req
+        end
+
+        def contains_file_object?(args)
+          args.values.any? { |v| file?(v) }
+        end
+
+        def file?(file)
+          file.is_a?(File) && File.file?(file.path)
         end
 
         def http_request_class
           Object.const_get("Net::HTTP::#{@endpoint.verb.capitalize}")
         end
 
+        def multipart_args(args)
+          args.map do |k, v|
+            if file?(v)
+              [k.to_s, v, { filename: File.basename(v.path) }]
+            else
+              [k.to_s, v.to_s]
+            end
+          end
+        end
+
         def post_or_put?
           %w[POST PUT].include? @endpoint.verb
+        end
+
+        def set_form(req, args)
+          if contains_file_object?(args)
+            req.set_form(multipart_args(args), 'multipart/form-data')
+          else
+            req.set_form_data(args)
+          end
         end
       end
     end
