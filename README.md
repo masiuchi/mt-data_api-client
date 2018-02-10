@@ -1,6 +1,6 @@
 # MT::DataAPI::Client
 
-Movable Type Data API client for Ruby. 
+Movable Type Data API client for Ruby.
 
 ## Installation
 
@@ -18,22 +18,67 @@ Or install it yourself as:
 
     $ gem install mt-data_api-client
 
-## Usage
+## Usage samples
+
+```ruby
+require 'mt/data_api/client'
+
+# Set URL to your mt-data-api.cgi script.
+client = MT::DataAPI::Client.new(
+  base_url: 'http://localhost/mt/mt-data-api.cgi'
+)
+
+# Set endpoint ID and its arguments.
+#
+# * You can see the list of endpoints by "client.call(:list_endpoints)"
+# * There is documentation of arguments at https://www.movabletype.jp/developers/data-api/.
+res = client.call(:list_endpoints)
+```
+
+### With block
 
 ```ruby
 require 'mt/data_api/client'
 
 client = MT::DataAPI::Client.new(
-  base_url: 'http://localhost/mt/mt-data-api.cgi',
-  client_id: 'mt-ruby'
+  base_url: 'http://localhost/mt/mt-data-api.cgi'
 )
 
-# without block
-json = client.call(:list_entries, site_id: 1)
+client.call(:list_entries, site_id: 1) do |res|
+  # ...
+end
+```
 
-# with block
-client.call(:list_sites) do |res|
-  json = res
+### Use authentication
+
+```ruby
+require 'mt/data_api/client'
+
+client = MT::DataAPI::Client.new(
+  base_url: 'http://loalhost/mt/mt-data-api.cgi'
+)
+
+res_auth = client.call(:authenticate, username: 'user', password: 'pass')
+
+if res_auth && !res_auth.key?("error")
+  res_list_plugins = client.call(:list_plugins)
+end
+```
+
+### Use upload_asset endpoint
+
+```ruby
+require 'mt/data_api/client'
+
+client = MT::DataAPI::Client.new(
+  base_url: 'http://mt.test:5000/mt-data-api.cgi'
+)
+
+res_auth = client.call(:authenticate, username: 'user', password: 'pass')
+
+if res_auth && !res_auth.key?("error")
+  jpeg_file = File.open('sample.jpg', 'rb')
+  res = client.call(:upload_asset, site_id: 1, file: jpeg_file)
 end
 ```
 
@@ -46,4 +91,3 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/masiuchi/mt-data_api-client.
-
