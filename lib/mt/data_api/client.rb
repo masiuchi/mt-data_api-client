@@ -10,7 +10,10 @@ module MT
       attr_accessor :access_token
 
       def initialize(opts)
-        opts_sym = opts.symbolize_keys.clone
+        opts_sym = opts.symbolize_keys
+        unless opts_sym.key?(:client_id)
+          opts_sym[:client_id] = default_client_id
+        end
         @access_token = opts_sym.delete(:access_token)
         @endpoint_manager = EndpointManager.new(opts_sym)
       end
@@ -27,6 +30,12 @@ module MT
 
       def endpoints
         @endpoint_manager.endpoints
+      end
+
+      private
+
+      def default_client_id
+        'mt-data_api-client version ' + VERSION
       end
     end
   end

@@ -10,17 +10,26 @@ require 'mt/data_api/client/endpoint_manager'
 describe MT::DataAPI::Client do
   opts = {
     base_url: 'http://localhost/mt/mt-data-api.cgi',
-    client_id: 'test'
   }
 
   endpoints = [MT::DataAPI::Client::EndpointManager::LIST_ENDPOINTS_HASH]
   opts_with_endpoints = opts.merge(endpoints: endpoints)
 
   describe '#initialize' do
-    client = described_class.new(opts)
+    shared_examples_for :returns_instance do
+      it "returns an instance of #{described_class}" do
+        expect(client).to be_instance_of(described_class)
+      end
+    end
 
-    it "returns an instance of #{described_class}" do
-      expect(client).to be_instance_of(described_class)
+    context 'with client_id' do
+      let(:client) { described_class.new(opts.merge(client_id: 'test')) }
+      it_behaves_like :returns_instance
+    end
+
+    context 'without client_id' do
+      let(:client) { described_class.new(opts) }
+      it_behaves_like :returns_instance
     end
   end
 
